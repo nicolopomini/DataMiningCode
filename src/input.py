@@ -1,19 +1,22 @@
 from __future__ import absolute_import
 import csv
+from typing import Dict, List
 
 
-class InputManager:
+class RecordDetails:
     TRANSACTION_ID = "tid"
     PARENT_ID = "parent"
     RECORD_ID = "rid"
 
-    def __init__(self) -> None:
-        self.records = {}   # dict with rid -> whole record
-        self.fields = {}    # dict with name of the field -> list of all possible values
-        self.field_positions = {}  # dict with field name -> position
-        self.position_field = {}    # dict with position -> name of the field
 
-    def read_input(self, input_file):
+class InputManager:
+    def __init__(self) -> None:
+        self.records: Dict[str, Dict] = {}   # dict with rid -> whole record
+        self.fields: Dict[str, List] = {}    # dict with name of the field -> list of all possible values
+        self.field_positions: Dict[str, int] = {}  # dict with field name -> position
+        self.position_field: Dict[int, str] = {}    # dict with position -> name of the field
+
+    def read_input(self, input_file: str) -> None:
         with open(input_file) as input_cvs:
             read_csv = csv.reader(input_cvs)
             i = 0
@@ -27,7 +30,7 @@ class InputManager:
                         self.fields[field] = []
                         j += 1
                 else:
-                    record_key = row[self.field_positions[InputManager.RECORD_ID]]
+                    record_key = row[self.field_positions[RecordDetails.RECORD_ID]]
                     record_dict = {}
                     for position in self.position_field:
                         key = self.position_field[position]
