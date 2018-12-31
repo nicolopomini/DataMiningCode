@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from typing import Dict, Any
+from typing import Dict
 
 from src.input import InputManager
 

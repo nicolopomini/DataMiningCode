@@ -2,6 +2,8 @@ from __future__ import absolute_import
 import csv
 from typing import Dict, List
 
+from src.tree import TreeList, Tree
+
 
 class RecordDetails:
     TRANSACTION_ID = "tid"
@@ -40,3 +42,19 @@ class InputManager:
                             self.fields[key].append(value)
                     self.records[record_key] = record_dict
                 i += 1
+
+    def build_tree(self) -> TreeList:
+        tree_list: TreeList = TreeList.empty()
+        trees: Dict[str, Tree] = {}
+        for rid in self.records:
+            trees[rid] = Tree(rid)
+        for rid in self.records:
+            if self.records[rid][RecordDetails.PARENT_ID] is None:
+                tree_list.add_tree(trees[rid])
+            else:
+                parent_id = self.records[rid][RecordDetails.PARENT_ID]
+                # set parent
+                trees[rid].parent = parent_id
+                # set child
+                trees[parent_id].add_child(trees[rid])
+        return tree_list

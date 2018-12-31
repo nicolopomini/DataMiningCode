@@ -11,3 +11,10 @@ class TestInputManager(TestCase):
         manager.read_input("test_input_file.csv")
         self.assertEqual(len(manager.records), 2)
         self.assertEqual(len(manager.field_positions), len(manager.position_field))
+
+    def test_trees_builder(self):
+        manager = InputManager()
+        manager.read_input("test_input_file.csv")
+        trees = manager.build_tree()
+        self.assertEqual(len(trees.trees), 1)
+        self.assertEqual(len(trees.trees[0].children), 1)
