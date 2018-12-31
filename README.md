@@ -9,10 +9,14 @@ Coding part for the data mining project
 
 ### Idea
 
-The starting idea can be the following:
-- cluser the records, in order to group them by similarity
-- count the occurences of singles
-- prune those nodes that are under a certain score (e.g. the average of appearence)
-- link a _survived_ node with its parent, if it is _survived_ too
-- count the link importance
-- go on with pruning / linking
+We have a list of trees, potentially large and irregular. We have to find frequent patterns among attributes (eg the field _a_ of the parent equal to _x_ implies the field _b_ of the child equal to _y_).
+Ideas:
+- prune single nodes that are not frequent, under a certain _threshold_;
+- with the remaining nodes, create couples of attributes with distance 1 (means that the two attributes are in nodes with distance 1)
+- prune again, excluding those couples less frequent than _threshold_;
+- go on, every iteration increasing by 1 the distance
+- stop when no more tuples survive from the pruning
+
+
+### Note
+Python >= 3.6 is necessary
