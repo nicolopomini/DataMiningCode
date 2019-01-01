@@ -35,5 +35,3 @@ class TreeList:
 
     def __repr__(self) -> str:
         return "TreeList %s" % str(self.trees)
-
-
