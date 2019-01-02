@@ -36,6 +36,13 @@ class TreePattern:
                 print("\t", end="")
             child.print_tree(tabs+1)
 
+    def get_nodes_list(self) -> []:
+        nodes_list: TreePattern = []
+        nodes_list.append(self)
+        for child in self.children:
+            nodes_list.extend(child.get_nodes_list())
+        return nodes_list
+
 class Pattern:
     @staticmethod
     def generate_pattern(length: int, fields: List[str], values: Dict[str, List[str]]) -> TreePattern:
