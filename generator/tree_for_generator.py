@@ -14,8 +14,8 @@ class TreePattern:
         """
         self.field: str = field
         self.value: str = value
-        self.parent = None
-        self.children = []
+        self.parent: TreePattern = None
+        self.children: TreePattern = []
 
     def add_child(self, child) -> None:
         self.children.append(child)
@@ -28,6 +28,12 @@ class TreePattern:
             return False
         return self.field == o.field and self.value == o.value
 
+    def print_tree(self, tabs) -> None:
+        print(self.__repr__())
+        for child in self.children:
+            for i in range(0, tabs):
+                print("\t", end="")
+            child.print_tree(tabs+1)
 
 class Pattern:
     @staticmethod
