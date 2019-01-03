@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 from unittest import TestCase
 
-from src.frequents import FrequentCounter
-from src.input import InputManager
+from frequents import FrequentCounter
+from input import InputManager
 
 
 class TestFrequents(TestCase):

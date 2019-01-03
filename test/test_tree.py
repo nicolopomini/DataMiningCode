@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from unittest import TestCase
 
-from src.tree import Tree
+from tree import Tree
 
 
 class TestTree(TestCase):
