@@ -5,10 +5,11 @@ from typing import List
 
 class Tree:
 
-    def __init__(self, key: str) -> None:
-        self.key: Tree = key
+    def __init__(self, key: str, fields: dict) -> None:
+        self.key: str = key
         self.parent = None
         self.children = []
+        self.fields = fields
 
     def add_child(self, child) -> None:
         self.children.append(child)
@@ -20,6 +21,12 @@ class Tree:
 
     def __repr__(self) -> str:
         return "Tree(key: %s, parent: %s, #children: %d)" % (self.key, self.parent, len(self.children))
+
+    def get_subtree(self) -> []:
+        subtree = [self]
+        for tree in self.children:
+            subtree.extend(tree.get_subtree())
+        return subtree
 
 
 class TreeList:

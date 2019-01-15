@@ -47,7 +47,7 @@ class InputManager:
         tree_list: TreeList = TreeList.empty()
         trees: Dict[str, Tree] = {}
         for rid in self.records:
-            trees[rid] = Tree(rid)
+            trees[rid] = Tree(rid, self.records[rid])
         for rid in self.records:
             if self.records[rid][RecordDetails.PARENT_ID] is None:
                 tree_list.add_tree(trees[rid])
