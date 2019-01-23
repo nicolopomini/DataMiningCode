@@ -10,7 +10,7 @@ class ItemSetNode:
     def __init__(self, node: Tree) -> None:
         self.strings: List[str] = []
         for field in node.fields:
-            self.strings.append("" + str(field) + str(node.fields[field]))
+            self.strings.append(str(field) + " = " + str(node.fields[field]))
 
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, ItemSetNode):
