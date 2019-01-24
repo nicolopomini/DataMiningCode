@@ -6,27 +6,34 @@ from typing import List
 from models.tree import Tree
 
 
-class ItemSetNode:
+class RecordTreeNode:
     def __init__(self, node: Tree) -> None:
         self.strings: List[str] = []
         for field in node.fields:
             self.strings.append(str(field) + " = " + str(node.fields[field]))
 
     def __eq__(self, o: object) -> bool:
-        if not isinstance(o, ItemSetNode):
+        if not isinstance(o, RecordTreeNode):
             return False
         return set(self.strings) == set(o.strings)
 
     def __hash__(self) -> int:
-        return hash(set(self.strings))
+        return hash(frozenset(self.strings))
 
     def __repr__(self) -> str:
         return str(self.strings)
 
 
-class ItemSetTree:
+class RecordTree:
+    """
+    Representation of a tree as a list of strings (the fields of each record) and a distance (from the root node)
+    """
     def __init__(self, transaction: Tree) -> None:
-        self.item_sets: List[ItemSetNode] = []
+        """
+        Transform a transaction into a decomposed lists of string and distances
+        :param transaction:
+        """
+        self.fields: List[RecordTreeNode] = []
         self.distances: List[int] = []
         queue = Queue()
         queue.put_nowait((transaction, 0))
@@ -34,22 +41,27 @@ class ItemSetTree:
             node, length = queue.get_nowait()
             for child in node.children:
                 queue.put_nowait((child, length + 1))
-            self.item_sets.append(ItemSetNode(node))
+            self.fields.append(RecordTreeNode(node))
             self.distances.append(length)
 
-    def get_itemset(self, index: int) -> (ItemSetNode, int):
-        if index < 0 or index >= len(self.item_sets):
-            raise ValueError("Invalid index. Given %d, max %d" % (index, len(self.item_sets)))
-        return self.item_sets[index], self.distances[index]
+    def get_node(self, index: int) -> (RecordTreeNode, int):
+        """
+        Get the i-th node of the tree
+        :param index: index of the node, ordered as a BFS visit
+        :return: the couple <list of fields as strings, distance from the root>
+        """
+        if index < 0 or index >= len(self.fields):
+            raise ValueError("Invalid index. Given %d, max %d" % (index, len(self.fields)))
+        return self.fields[index], self.distances[index]
 
     def __iter__(self):
         self._i = 0
         return self
 
     def __next__(self):
-        if self._i == len(self.item_sets):
+        if self._i == len(self.fields):
             raise StopIteration
         else:
-            item = (self.item_sets[self._i], self.distances[self._i])
+            item = (self.fields[self._i], self.distances[self._i])
             self._i += 1
             return item
