@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from asyncio import Queue
 from typing import List
 
-from tree import Tree
+from models.tree import Tree
 
 
 class ItemSetNode:

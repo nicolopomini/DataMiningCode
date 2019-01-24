@@ -3,8 +3,8 @@ from __future__ import absolute_import
 from typing import List
 from unittest import TestCase
 
-from input import InputManager
-from itemset import ItemSetTree
+from logic.input import InputManager
+from models.itemset import ItemSetTree
 
 
 class TestItemset(TestCase):

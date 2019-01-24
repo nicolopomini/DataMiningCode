@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from typing import Dict
 
-from input import InputManager
+from logic.input import InputManager
 
 
 class FrequentCounter:
