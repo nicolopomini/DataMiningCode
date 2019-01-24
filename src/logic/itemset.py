@@ -34,4 +34,4 @@ class ItemSetGenerator:
         te_ary = te.fit(dataset).transform(dataset)
         df = pd.DataFrame(te_ary, columns=te.columns_)
         frequent_itemsets = apriori(df, min_support=self.threshold, use_colnames=True)
-        return frequent_itemsets["itemsets"].tolist()
+        return [fi for fi in frequent_itemsets["itemsets"].tolist() if len(fi) > 1]

@@ -10,7 +10,8 @@ class RecordTreeNode:
     def __init__(self, node: Tree) -> None:
         self.strings: List[str] = []
         for field in node.fields:
-            self.strings.append(str(field) + " = " + str(node.fields[field]))
+            if field not in ["rid", "tid", "parent"]:
+                self.strings.append(str(field) + " = " + str(node.fields[field]))
 
     def __eq__(self, o: object) -> bool:
         if not isinstance(o, RecordTreeNode):
