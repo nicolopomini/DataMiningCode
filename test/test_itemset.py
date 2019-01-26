@@ -13,5 +13,5 @@ class TestItemSet(TestCase):
         trees = manager.build_tree()
         generator = ItemSetGenerator(trees)
         patterns = generator.itemset_mining()
-        #print(patterns)
+        print(patterns)
         print(len(patterns))

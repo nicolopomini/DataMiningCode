@@ -28,6 +28,13 @@ class Tree:
             subtree.extend(tree.get_subtree())
         return subtree
 
+    def print_tree(self, tabs: int = 0) -> None:
+        print(self.__repr__())
+        for child in self.children:
+            for _ in range(tabs+1):
+                print("\t", end="")
+            child.print_tree(tabs + 1)
+
 
 class TreeList:
     def __init__(self, trees: List[Tree]) -> None:
