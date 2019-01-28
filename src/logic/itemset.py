@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
-from typing import List
-from typing import Dict
+from typing import List, Tuple
 import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori
@@ -44,18 +43,18 @@ class ItemSetGenerator:
         for itemset in frequent_itemsets:
             if len(itemset) <= 3:
                 list_set = list(itemset)
-                ordered_sets = list(it.permutations(list_set))
-                for set in ordered_sets:
-                    set_string = ','.join(set)
-                    sum = 0
+                ordered_sets: List[Tuple[str]] = list(it.permutations(list_set))
+                for s in ordered_sets:
+                    set_string = ','.join(s)
+                    total = 0
                     for tree in self.trees.trees:
-                        sum = sum + self.ordered_itemset_occourrences_in_tree(set, tree)
-                    occourences[set_string] = sum
+                        total += self.ordered_itemset_occourrences_in_tree(s, tree)
+                    occourences[set_string] = total
         for o, v in occourences.items():
             if v > 1:
                 print("" + o + ": " + str(v))
 
-    def ordered_itemset_occourrences_in_tree(self, frequent_itemset: List[str], tree: Tree, next_item_index: int = 0) -> int:
+    def ordered_itemset_occourrences_in_tree(self, frequent_itemset: Tuple[str], tree: Tree, next_item_index: int = 0) -> int:
         values = []
         occourences = 0
         for field in list(tree.fields.keys()):
