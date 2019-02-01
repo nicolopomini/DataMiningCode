@@ -6,9 +6,9 @@ from models.tree import TreeList, Tree
 
 
 class RecordDetails:
-    TRANSACTION_ID = "tid"
-    PARENT_ID = "parent"
-    RECORD_ID = "rid"
+    TRANSACTION_ID = "transaction_id"
+    PARENT_ID = "parent_id"
+    RECORD_ID = "record_id"
 
 
 class InputManager:
@@ -36,7 +36,7 @@ class InputManager:
                     record_dict = {}
                     for position in self.position_field:
                         key = self.position_field[position]
-                        value = row[position] if row[position] != "" else None  # just for root records
+                        value = row[position] if row[position] != "None" else None  # just for root records
                         record_dict[key] = value
                         if value is not None and value not in self.fields[key]:
                             self.fields[key].append(value)
