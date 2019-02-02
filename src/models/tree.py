@@ -5,7 +5,7 @@ from typing import List
 
 class PNode:
 
-    def __init__(self, fields: list):
+    def __init__(self, fields: List[str]):
         self.parent = None
         self.children = []
         self.fields = fields
@@ -22,7 +22,16 @@ class PNode:
             child.print_tree(tabs + 1)
 
     def __repr__(self) -> str:
-        return "values: %s" % (self.fields)
+        return "values: %s" % self.fields
+
+    def __eq__(self, o: object) -> bool:
+        if o is None or not isinstance(o, PNode):
+            return False
+        return set(self.fields) == set(o.fields) and set(self.children) == set(o.children)
+
+    def __hash__(self) -> int:
+        return hash((frozenset(self.fields), frozenset(self.children)))
+
 
 class Tree:
 
@@ -69,6 +78,7 @@ class Tree:
                 field_value_list.append(str(field) + " = " + str(node.fields[field]))
             field_value_set = frozenset(field_value_list).intersection(attributes_complete_set)
             node.fields = list(field_value_set)
+
 
 class TreeList:
     def __init__(self, trees: List[Tree]) -> None:
