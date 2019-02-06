@@ -91,9 +91,10 @@ class TreeList:
     def add_tree(self, tree: Tree):
         self.trees.append(tree)
 
-    def filter_attributes(self, attributes: List[frozenset]):
+    def filter_attributes(self, attributes: List[frozenset]): # TODO missing return type, if any
         for tree in self.trees:
             tree.filter_attributes(attributes)
+            # non fa nulla
 
     def __repr__(self) -> str:
         return "TreeList %s" % str(self.trees)
