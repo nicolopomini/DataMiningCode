@@ -21,18 +21,36 @@ class Manager:
         manager = InputManager()
         manager.read_input(self.filename)
         trees = manager.build_tree()
+        print("Parsed trees!")
         itemset_generator = ItemSetGenerator(trees)
         itemsets = itemset_generator.itemset_mining()
+        print("Computed itemsets!")
         trees.filter_attributes(itemsets)
-
+        print("Filtered attributes!")
+        i = 0
         for transaction in trees.trees:
+            i = i + 1
+            print("Tree " + str(i))
+            print()
+            transaction.print_tree()
+            itemset_generator.compute_tree_recursion_limit(transaction)
             flat_tree = transaction.get_subtree()
+            print()
+            print(flat_tree)
+            print("Computing patterns...")
             local_patterns: List[PNode] = []
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
                     itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
-                    self.filter.count_on_one_transaction(local_patterns)
+            print("Computed patterns for tree " + str(i))
+            # REMOVE EMPTY PATTERNS
+            for pattern in local_patterns:
+                if pattern.is_empty():
+                    local_patterns.remove(pattern)
+            self.filter.count_on_one_transaction(local_patterns)
+            print("Counted patterns for tree " + str(i))
+            print()
 
 
 class BaselineManager(Manager):
@@ -49,4 +67,4 @@ class BaselineManager(Manager):
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
                     itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
-                    self.filter.count_on_one_transaction(local_patterns)
+            self.filter.count_on_one_transaction(local_patterns)

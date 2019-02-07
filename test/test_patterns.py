@@ -11,16 +11,21 @@ class TestItemSet(TestCase):
         manager = InputManager()
         manager.read_input("test_itemsets.csv")
         trees = manager.build_tree()
+        print("Parsed trees!")
         generator = ItemSetGenerator(trees)
         patterns = generator.itemset_mining()
+        print("Computed itemsets!")
         trees.filter_attributes(patterns)
+        print("Filtered attributes!")
         i = 0
         for tree in trees.trees:
             i = i + 1
             print("Tree " + str(i))
             print()
             tree.print_tree()
+            generator.compute_tree_recursion_limit(tree)
             flat_tree = tree.get_subtree()
+            print()
             print(flat_tree)
             global_patterns = []
             for node in flat_tree:

@@ -32,6 +32,14 @@ class PNode:
     def __hash__(self) -> int:
         return hash((frozenset(self.fields), frozenset(self.children)))
 
+    def is_empty(self) -> bool:
+        empty = True
+        if len(self.fields) < 1:
+            for child in self.children:
+                empty = empty and child.is_empty()
+        else:
+            empty = False
+        return empty
 
 class Tree:
 
@@ -42,6 +50,7 @@ class Tree:
         self.fields = fields
         self.calls = 0
         self.patterns = []
+        self.stop = False
 
     def add_child(self, child) -> None:
         self.children.append(child)
@@ -91,10 +100,9 @@ class TreeList:
     def add_tree(self, tree: Tree):
         self.trees.append(tree)
 
-    def filter_attributes(self, attributes: List[frozenset]): # TODO missing return type, if any
+    def filter_attributes(self, attributes: List[frozenset]):
         for tree in self.trees:
             tree.filter_attributes(attributes)
-            # non fa nulla
 
     def __repr__(self) -> str:
         return "TreeList %s" % str(self.trees)
