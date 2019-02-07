@@ -44,10 +44,8 @@ class Manager:
                     patterns_to_expand: List[PNode] = []
                     itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
             print("Computed patterns for tree " + str(i))
-            # REMOVE EMPTY PATTERNS
-            for pattern in local_patterns:
-                if pattern.is_empty():
-                    local_patterns.remove(pattern)
+            print(len(local_patterns))
+            print("Counting patterns...")
             self.filter.count_on_one_transaction(local_patterns)
             print("Counted patterns for tree " + str(i))
             print()

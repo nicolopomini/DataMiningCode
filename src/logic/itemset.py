@@ -17,11 +17,16 @@ class ItemSetGenerator:
     """
     Incapsulation of the logic to create a list of item sets from a list of trees
     """
-    def __init__(self, trees: TreeList, threshold: float = 0.6) -> None:
+    def __init__(self, trees: TreeList, threshold: float = 0.2) -> None:
         self.trees = trees
         self.threshold = threshold
         self.counter = 0;
-
+        # debug variable
+        '''
+        self.test_node = PNode(['b = c'])
+        self.test_node.add_child(PNode(['b = c']))
+        self.test_node.add_child(PNode(['b = c']))
+        '''
     def generate_record_trees(self) -> List[RecordTree]:
         return [RecordTree(t) for t in self.trees.trees]
 
@@ -112,7 +117,7 @@ class ItemSetGenerator:
                                 for z in range(0, last_child_index + 1):
                                     tree_copy = copy.deepcopy(to_combine[z])
                                     to_attach_copy.add_child(tree_copy)
-                                    new_patterns.append(to_attach_copy)
+                                new_patterns.append(to_attach_copy)
                             child_combinator_index[last_child_index] = child_combinator_index[last_child_index] + 1
                             for z in range(last_child_index, 0, -1):
                                 if (child_combinator_size[z] - child_combinator_index[z]) == 0:
@@ -146,7 +151,7 @@ class ItemSetGenerator:
                                 for z in range(0, last_child_index + 1):
                                     tree_copy = copy.deepcopy(to_combine[z])
                                     to_attach_copy.add_child(tree_copy)
-                                    new_patterns.append(to_attach_copy)
+                                new_patterns.append(to_attach_copy)
                             child_combinator_index[last_child_index] = child_combinator_index[last_child_index] + 1
                             for z in range(last_child_index, 0, -1):
                                 if (child_combinator_size[z] - child_combinator_index[z]) == 0:

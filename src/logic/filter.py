@@ -13,9 +13,9 @@ class Filter:
         self.threshold = threshold
         self.counters: Dict[PNode, int] = {}
         #debug variable
-        self.test_node = PNode(['a = a'])
+        self.test_node = PNode([])
+        self.test_node.add_child(PNode(['b = c']))
         self.test_node.add_child(PNode([]))
-        self.test_node.children[0].add_child(PNode([]))
 
     def count_on_one_transaction(self, patterns: List[PNode]) -> None:
         """
@@ -52,7 +52,16 @@ class Filter:
         """
         filtered_patterns = {}
         for pattern in self.counters:
-            if self.counters[pattern] > self.threshold:
+            if self.counters[pattern] >= self.threshold:
                 filtered_patterns[pattern] = self.counters[pattern]
-        sorted_patterns = sorted(filtered_patterns.items(), key=lambda kv: kv[1], reverse=True)
-        return sorted_patterns[:n]
+        sorted_patterns = sorted(filtered_patterns.items(), key=lambda kv: kv[1])
+        if n > 0:
+            return sorted_patterns[-n:]
+        else:
+            return sorted_patterns
+
+    def remove_empty(self):
+        sorted_patterns = sorted(self.counters.items(), key=lambda kv: kv[1], reverse=True)
+        for pattern in sorted_patterns:
+            if pattern[0].is_empty():
+                self.counters.pop(pattern[0], None)
