@@ -27,10 +27,10 @@ class PNode:
     def __eq__(self, o: object) -> bool:
         if o is None or not isinstance(o, PNode):
             return False
-        return set(self.fields) == set(o.fields) and set(self.children) == set(o.children)
+        return set(self.fields) == set(o.fields) and set(self.children) == set(o.children) and len(self.get_subtree()) == len(o.get_subtree())
 
     def __hash__(self) -> int:
-        return hash((frozenset(self.fields), frozenset(self.children)))
+        return hash((frozenset(self.fields), frozenset(self.children), len(self.get_subtree())))
 
     def is_empty(self) -> bool:
         empty = True
@@ -40,6 +40,13 @@ class PNode:
         else:
             empty = False
         return empty
+
+    def get_subtree(self) -> []:
+        subtree = [self]
+        for tree in self.children:
+            subtree.extend(tree.get_subtree())
+        return subtree
+
 
 class Tree:
 

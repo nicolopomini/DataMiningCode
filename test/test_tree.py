@@ -41,3 +41,22 @@ class TestPNode(TestCase):
 
         self.assertEqual(n11, n21)
         self.assertEqual(hash(n11), hash(n21))
+
+    def test_comparison2(self):
+        n11 = PNode(["a = a"])
+        n12 = PNode([])
+        n13 = PNode([])
+        n14 = PNode([])
+        n11.add_child(n12)
+        n12.add_child(n13)
+        n12.add_child(n14)
+
+        n21 = PNode(["a = a"])
+        n22 = PNode([])
+        n23 = PNode([])
+        n21.add_child(n22)
+        n22.add_child(n23)
+
+        self.assertFalse(n11 == n22)
+        self.assertFalse(hash(n11) == hash(n21))
+
