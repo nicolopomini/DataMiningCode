@@ -4,3 +4,5 @@ DS_Store
 *prova.py
 venv*
 *pycache*
+src/*.csv
+src/*.txt

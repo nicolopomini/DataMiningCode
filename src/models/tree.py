@@ -21,6 +21,15 @@ class PNode:
                 print("\t", end="")
             child.print_tree(tabs + 1)
 
+    def get_string(self, tab: int = 0) -> str:
+        node = ""
+        for _ in range(tab):
+            node += "\t"
+        node += "Node" + str(self.fields)
+        for n in self.children:
+            node += "\n" + n.get_string(tab=tab + 1)
+        return node
+
     def __repr__(self) -> str:
         return "values: %s" % self.fields
 

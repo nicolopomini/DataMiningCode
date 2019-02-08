@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from typing import List, Tuple
+from typing import List
 import pandas as pd
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import apriori
@@ -20,13 +20,8 @@ class ItemSetGenerator:
     def __init__(self, trees: TreeList, threshold: float = 0.2) -> None:
         self.trees = trees
         self.threshold = threshold
-        self.counter = 0;
-        # debug variable
-        '''
-        self.test_node = PNode(['b = c'])
-        self.test_node.add_child(PNode(['b = c']))
-        self.test_node.add_child(PNode(['b = c']))
-        '''
+        self.counter = 0
+
     def generate_record_trees(self) -> List[RecordTree]:
         return [RecordTree(t) for t in self.trees.trees]
 
@@ -39,29 +34,12 @@ class ItemSetGenerator:
             for node, dist in tree:
                 field_list.extend(node.strings)
             dataset.append(field_list)
-        print(dataset)
         print("Number of transactions: " + str(len(dataset)))
         te = TransactionEncoder()
         te_ary = te.fit(dataset).transform(dataset)
         df = pd.DataFrame(te_ary, columns=te.columns_)
         frequent_itemsets = apriori(df, min_support=self.threshold, use_colnames=True)
         return [fi for fi in frequent_itemsets["itemsets"].tolist() if len(fi) > 1]
-
-    def scan_forest_for_patterns(self, frequent_itemsets: List[frozenset]):
-        occourences = dict()
-        for itemset in frequent_itemsets:
-            if len(itemset) <= 3:
-                list_set = list(itemset)
-                ordered_sets: List[Tuple[str]] = list(it.permutations(list_set))
-                for s in ordered_sets:
-                    set_string = ','.join(s)
-                    total = 0
-                    for tree in self.trees.trees:
-                        total += self.ordered_itemset_occourrences_in_tree(s, tree)
-                    occourences[set_string] = total
-        for o, v in occourences.items():
-            if v > 1:
-                print("" + o + ": " + str(v))
 
     def compute_tree_recursion_limit(self, node: Tree, parent: Tree = None):
         if len(node.fields) == 0:
@@ -73,7 +51,9 @@ class ItemSetGenerator:
             else:
                 node.stop = True
 
-    def compute_patterns_by_node(self, node: Tree, original_nodes: List[Tree], global_patterns: List[PNode], patterns_to_expand: List[PNode] = []):
+    def compute_patterns_by_node(self, node: Tree, original_nodes: List[Tree], global_patterns: List[PNode], patterns_to_expand: List[PNode] = None):
+        if patterns_to_expand is None:
+            patterns_to_expand = []
         parent = None
         if not node.stop:
             for node_to_check in original_nodes:
@@ -164,15 +144,3 @@ class ItemSetGenerator:
                 node.patterns = []
                 if parent is not None:
                     self.compute_patterns_by_node(parent, original_nodes, global_patterns, complete_patterns)
-            '''
-            complete_patterns.append(PNode([]))
-            if parent is not None:
-                if len(patterns_to_expand) > 0:
-                    for p in patterns_to_expand:
-                        new_pattern = copy.deepcopy(p)
-                        new_empty_node = PNode([])
-                        new_empty_node.add_child(new_pattern)
-                        complete_patterns.append(new_empty_node)
-                patterns_to_expand.extend(complete_patterns)
-                self.compute_patterns_by_node(parent, original_nodes, global_patterns, patterns_to_expand)
-            '''

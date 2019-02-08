@@ -5,6 +5,7 @@ from unittest import TestCase
 from logic.manager import Manager
 from models.tree import PNode
 
+
 class TestItemSet(TestCase):
     def test_pattern_rec(self):
         to_find1 = PNode(['06b7bde2b5eb49efb00dc260edfd1bae = 1ec1b7ccd60a444d99e16cf4ce5021be',
