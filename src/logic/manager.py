@@ -34,6 +34,8 @@ class Manager:
             if debug:
                 print("Computing patterns for tree %d" % i)
             local_patterns: List[PNode] = []
+            transaction.print_tree()
+            print()
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
@@ -50,11 +52,13 @@ class BaselineManager(Manager):
         manager.read_input(self.filename)
         trees = manager.build_tree()
         itemset_generator = ItemSetGenerator(trees)
-
+        trees.filter_baseline_node_info()
         for transaction in trees.trees:
             itemset_generator.compute_tree_recursion_limit(transaction)
             flat_tree = transaction.get_subtree()
             local_patterns: List[PNode] = []
+            transaction.print_tree()
+            print()
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []

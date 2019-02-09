@@ -17,7 +17,7 @@ class TestItemSet(TestCase):
         to_find2.children[0].add_child(PNode(['a71fb85d222b4d30819d8b442a6ab945 = f9bfbd58d8764011b9266d06c00b84f5']))
         thr = 5
         top = 10
-        manager = Manager("output.csv", thr)
+        manager = Manager("test_itemsets.csv", thr)
         manager.compute_mining()
         manager.filter.remove_empty()
         f_patterns = manager.filter.get_first_n_frequents(top)

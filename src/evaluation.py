@@ -6,7 +6,7 @@ from logic.manager import Manager, BaselineManager
 
 print("Our implementation")
 s1 = time.time()
-manager = Manager("test.csv", 2)
+manager = Manager("output2.csv", 2)
 manager.compute_mining()
 manager.filter.remove_empty()
 fp = set([x for x, _ in manager.filter.get_by_importance()])
@@ -14,7 +14,7 @@ f1 = time.time()
 
 print("Baseline")
 s2 = time.time()
-manager = BaselineManager("test.csv", 2)
+manager = BaselineManager("output2.csv", 2)
 manager.compute_mining()
 manager.filter.remove_empty()
 fp1 = set([x for x, _ in manager.filter.get_by_importance()])

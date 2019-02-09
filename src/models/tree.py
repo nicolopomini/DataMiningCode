@@ -93,6 +93,7 @@ class Tree:
             child.print_tree(tabs + 1)
 
     def filter_attributes(self, attributes: List[frozenset]):
+        self.filter_node_info()
         attributes_list = []
         for att in attributes:
             attributes_list.extend(list(att))
@@ -104,6 +105,21 @@ class Tree:
             field_value_set = frozenset(field_value_list).intersection(attributes_complete_set)
             node.fields = list(field_value_set)
 
+    def filter_node_info(self):
+        for node in self.get_subtree():
+            node.fields.pop("transaction_id")
+            node.fields.pop("record_id")
+            node.fields.pop("parent_id")
+
+    def filter_baseline_node_info(self):
+        for node in self.get_subtree():
+            node.fields.pop("transaction_id")
+            node.fields.pop("record_id")
+            node.fields.pop("parent_id")
+            field_value_list = []
+            for field in node.fields:
+                field_value_list.append(str(field) + " = " + str(node.fields[field]))
+            node.fields = list(frozenset(field_value_list))
 
 class TreeList:
     def __init__(self, trees: List[Tree]) -> None:
@@ -119,6 +135,10 @@ class TreeList:
     def filter_attributes(self, attributes: List[frozenset]):
         for tree in self.trees:
             tree.filter_attributes(attributes)
+
+    def filter_baseline_node_info(self):
+        for tree in self.trees:
+            tree.filter_baseline_node_info()
 
     def __repr__(self) -> str:
         return "TreeList %s" % str(self.trees)
