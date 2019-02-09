@@ -17,7 +17,7 @@ class Manager:
     def get_frequent_patterns(self) -> List[PNode]:
         return self.filter.get_frequents()
 
-    def compute_mining(self, debug: bool = False) -> None:
+    def compute_mining(self, simple: bool = False, debug: bool = False) -> None:
         manager = InputManager()
         manager.read_input(self.filename)
         trees = manager.build_tree()
@@ -39,15 +39,17 @@ class Manager:
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
-                    itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
+                    if not simple:
+                        itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
+                    else:
+                        itemset_generator.compute_simple_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
             if debug:
                 print("Computed patterns for tree " + str(i))
-
             self.filter.count_on_one_transaction(local_patterns)
 
 
 class BaselineManager(Manager):
-    def compute_mining(self, debug: bool = False) -> None:
+    def compute_mining(self, simple: bool = False, debug: bool = False) -> None:
         manager = InputManager()
         manager.read_input(self.filename)
         trees = manager.build_tree()
@@ -62,5 +64,8 @@ class BaselineManager(Manager):
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
-                    itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
+                    if not simple:
+                        itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
+                    else:
+                        itemset_generator.compute_simple_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
             self.filter.count_on_one_transaction(local_patterns)
