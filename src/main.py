@@ -1,10 +1,8 @@
 from __future__ import absolute_import
 
 import argparse
-from typing import List
 
 from logic.manager import Manager
-from models.tree import PNode
 
 argument_parser = argparse.ArgumentParser(description="Miner of frequent patterns in tree-like complex objects")
 argument_parser.add_argument("-out", dest="output", type=str, help="Output file name (txt format)", action="store", default="output.txt")

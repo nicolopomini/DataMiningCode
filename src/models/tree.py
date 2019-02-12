@@ -121,6 +121,7 @@ class Tree:
                 field_value_list.append(str(field) + " = " + str(node.fields[field]))
             node.fields = list(frozenset(field_value_list))
 
+
 class TreeList:
     def __init__(self, trees: List[Tree]) -> None:
         self.trees: List[Tree] = trees

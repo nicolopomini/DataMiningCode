@@ -31,11 +31,8 @@ class Manager:
             i = i + 1
             itemset_generator.compute_tree_recursion_limit(transaction)
             flat_tree = transaction.get_subtree()
-            if debug:
-                print("Computing patterns for tree %d" % i)
+            print("Computing patterns for tree %d" % i)
             local_patterns: List[PNode] = []
-            transaction.print_tree()
-            print()
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []
@@ -43,8 +40,7 @@ class Manager:
                         itemset_generator.compute_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
                     else:
                         itemset_generator.compute_simple_patterns_by_node(node, flat_tree, local_patterns, patterns_to_expand)
-            if debug:
-                print("Computed patterns for tree " + str(i))
+            print("Computed patterns for tree " + str(i))
             self.filter.count_on_one_transaction(local_patterns)
 
 
@@ -59,8 +55,6 @@ class BaselineManager(Manager):
             itemset_generator.compute_tree_recursion_limit(transaction)
             flat_tree = transaction.get_subtree()
             local_patterns: List[PNode] = []
-            transaction.print_tree()
-            print()
             for node in flat_tree:
                 if len(node.children) == 0:
                     patterns_to_expand: List[PNode] = []

@@ -114,7 +114,6 @@ class ItemSetGenerator:
             if parent is not None:
                 self.compute_patterns_by_node(parent, original_nodes, global_patterns, complete_patterns)
 
-
     def compute_simple_patterns_by_node(self, node: Tree, original_nodes: List[Tree], global_patterns: List[PNode], patterns_to_expand: List[PNode] = None):
         if patterns_to_expand is None:
             patterns_to_expand = []
